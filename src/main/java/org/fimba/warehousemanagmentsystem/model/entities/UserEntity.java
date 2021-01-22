@@ -2,7 +2,7 @@ package org.fimba.warehousemanagmentsystem.model.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.fimba.warehousemanagmentsystem.model.enums.EntityStatus;
+import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 
 import javax.persistence.*;
 @Getter
@@ -18,5 +18,5 @@ public class UserEntity extends BaseEntity{
 
     @Column(name = "STATUS",length = 7,nullable = false)
     @Enumerated(value=EnumType.STRING)
-    private EntityStatus entityStatus = EntityStatus.ACTIVE;
+    private WarehouseStatus warehouseStatus = WarehouseStatus.ACTIVE;
 }

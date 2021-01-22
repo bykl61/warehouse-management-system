@@ -2,10 +2,11 @@ package org.fimba.warehousemanagmentsystem.model.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.fimba.warehousemanagmentsystem.model.enums.EntityStatus;
+import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -21,7 +22,13 @@ public class BaseEntity {
     @Column(nullable = false,unique = true)
     private String code;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedDate;
+
     @Column(nullable = false,length = 7)
     @Enumerated(value = EnumType.STRING)
-    private EntityStatus entityStatus = EntityStatus.ACTIVE;
+    private WarehouseStatus warehouseStatus = WarehouseStatus.ACTIVE;
 }

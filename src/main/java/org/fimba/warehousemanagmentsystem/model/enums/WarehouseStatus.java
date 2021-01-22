@@ -1,5 +1,5 @@
 package org.fimba.warehousemanagmentsystem.model.enums;
 
-public enum EntityStatus {
+public enum WarehouseStatus {
         ACTIVE,PASSIVE,DELETED
 }
