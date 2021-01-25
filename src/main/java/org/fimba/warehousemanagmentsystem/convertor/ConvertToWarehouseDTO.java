@@ -15,7 +15,7 @@ public class ConvertToWarehouseDTO implements WarehouseAPIBaseConvetor<Warehouse
         warehouseDTO.setCode(convert.getCode());
         warehouseDTO.setCreatedDate(convert.getCreatedDate());
         warehouseDTO.setUpdatedDate(convert.getUpdatedDate());
-        warehouseDTO.setStatus(convert.getWarehouseStatus());
+        warehouseDTO.setStatus(convert.getStatus());
         return warehouseDTO;
     }
 }

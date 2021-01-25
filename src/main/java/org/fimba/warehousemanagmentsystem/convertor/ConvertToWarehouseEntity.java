@@ -5,6 +5,9 @@ import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
 import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+import java.util.Objects;
+
 @Component
 public class ConvertToWarehouseEntity implements WarehouseAPIBaseConvetor<WarehouseDTO, WarehouseEntity> {
 
@@ -14,9 +17,9 @@ public class ConvertToWarehouseEntity implements WarehouseAPIBaseConvetor<Wareho
         warehouseEntity.setId(convert.getId());
         warehouseEntity.setName(convert.getName());
         warehouseEntity.setCode(convert.getCode());
-        warehouseEntity.setCreatedDate(convert.getCreatedDate());
+        warehouseEntity.setCreatedDate(Objects.isNull(convert.getCreatedDate()) ? new Date() : convert.getCreatedDate());
         warehouseEntity.setUpdatedDate(convert.getUpdatedDate());
-        warehouseEntity.setWarehouseStatus(convert.getStatus());
+        warehouseEntity.setStatus(convert.getStatus());
         return warehouseEntity;
     }
 

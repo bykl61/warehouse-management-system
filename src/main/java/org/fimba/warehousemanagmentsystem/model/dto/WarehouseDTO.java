@@ -7,5 +7,5 @@ import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 @Getter
 @Setter
 public class WarehouseDTO extends BaseDTO {
-    private WarehouseStatus status;
+    private WarehouseStatus status = WarehouseStatus.ACTIVE;
 }

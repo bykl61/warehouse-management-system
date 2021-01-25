@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 
 @Repository
-public interface WarehouseCRUDRepository extends JpaRepository<WarehouseEntity,Long> {
-    @Query("SELECT w FROM WarehouseEntity w WHERE w.warehouseStatus='ACTIVE' OR w.warehouseStatus='PASSIVE' ")
+public interface WarehouseCRUDRepository extends JpaRepository<WarehouseEntity, Long> {
+    @Query("SELECT w FROM WarehouseEntity w WHERE w.status='ACTIVE' OR w.status ='PASSIVE' ")
     Collection<WarehouseEntity> findAllActiveAndPassive();
 }
