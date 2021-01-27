@@ -6,8 +6,10 @@ import org.fimba.warehousemanagmentsystem.convertor.ConvertToWarehouseDTO;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertToWarehouseEntity;
 import org.fimba.warehousemanagmentsystem.dao.WarehouseCRUDRepository;
 import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
+import org.fimba.warehousemanagmentsystem.model.entities.ProductWarehouseId;
 import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
+import org.fimba.warehousemanagmentsystem.service.ProductOperationService;
 import org.fimba.warehousemanagmentsystem.service.WarehouseCRUDService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
     private final ConvertToWarehouseDTO convertToWarehouseDTO;
     private final ConvertToWarehouseEntity convertToWarehouseEntity;
     private final WarehouseCRUDRepository warehouseCRUDRepository;
+    private final ProductOperationServiceImpl productOperationService;
 
     @Override
     public WarehouseAPIResponseHolder<Collection<WarehouseDTO>> list() {
@@ -39,6 +42,7 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
     public WarehouseAPIResponseHolder<WarehouseDTO> create(WarehouseDTO dto) {
         WarehouseEntity warehouseEntity = convertToWarehouseEntity.convertor(dto);
         warehouseEntity.setCreatedDate(new Date());
+
         WarehouseEntity savedEntity = warehouseCRUDRepository.save(warehouseEntity);
         WarehouseDTO warehouseDTO = convertToWarehouseDTO.convertor(savedEntity);
         return new WarehouseAPIResponseHolder<>(warehouseDTO,HttpStatus.OK);

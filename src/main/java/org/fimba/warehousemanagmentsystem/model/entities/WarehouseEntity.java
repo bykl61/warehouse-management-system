@@ -20,4 +20,5 @@ public class WarehouseEntity extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS",length = 7,nullable = false)
     private WarehouseStatus status = WarehouseStatus.ACTIVE;
+
 }

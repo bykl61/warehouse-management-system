@@ -1,5 +1,6 @@
 package org.fimba.warehousemanagmentsystem.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,7 @@ public class ProductWarehouse {
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     UserEntity userEntity;
 
     @Column(name = "stockAmount")
