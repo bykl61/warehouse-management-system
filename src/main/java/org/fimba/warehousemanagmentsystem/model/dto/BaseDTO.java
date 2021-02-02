@@ -1,5 +1,6 @@
 package org.fimba.warehousemanagmentsystem.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,10 @@ public class BaseDTO implements Serializable {
 
     @NotEmpty(message = "Name is not empty")
     private String code;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createdDate;
+
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatedDate;
 }

@@ -6,10 +6,8 @@ import org.fimba.warehousemanagmentsystem.convertor.ConvertToWarehouseDTO;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertToWarehouseEntity;
 import org.fimba.warehousemanagmentsystem.dao.WarehouseCRUDRepository;
 import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
-import org.fimba.warehousemanagmentsystem.model.entities.ProductWarehouseId;
 import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
-import org.fimba.warehousemanagmentsystem.service.ProductOperationService;
 import org.fimba.warehousemanagmentsystem.service.WarehouseCRUDService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -35,7 +33,7 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
                 .stream()
                 .map(convertToWarehouseDTO::convertor)
                 .collect(Collectors.toList());
-        return new WarehouseAPIResponseHolder<>(warehouseDTOList,HttpStatus.OK);
+        return new WarehouseAPIResponseHolder<>(warehouseDTOList);
     }
 
     @Override

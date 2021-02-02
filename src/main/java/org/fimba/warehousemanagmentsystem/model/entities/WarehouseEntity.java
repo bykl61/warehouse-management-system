@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -14,8 +15,12 @@ public class WarehouseEntity extends BaseEntity{
 
 
 
-    @OneToMany(mappedBy = "warehouse",cascade = CascadeType.ALL)
-    private Set<ProductWarehouse> productWarehouses;
+    @ElementCollection
+    @CollectionTable(
+            name= "PRODUCT_WAREHOUSE",
+            joinColumns = @JoinColumn(name = "WAREHOUSE_ID")
+    )
+    private Set<ProductWarehouse> productWarehouses = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS",length = 7,nullable = false)

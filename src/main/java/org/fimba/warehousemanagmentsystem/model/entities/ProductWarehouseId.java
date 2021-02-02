@@ -1,20 +1,24 @@
 package org.fimba.warehousemanagmentsystem.model.entities;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
-@EqualsAndHashCode
+/*@EqualsAndHashCode
 @Getter
 @Setter
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor*/
 public class ProductWarehouseId implements Serializable {
 
-     private Long warehouseId;
-     private Long productId;
-     private Long userId;
+   /*  @Column(name="WAREHOUSE_ID")
+     private Long warehouseId ;
+
+     @Column(name="PRODUCT_ID")
+     private Long productId ;*/
+     //private Long userId;
 
 }

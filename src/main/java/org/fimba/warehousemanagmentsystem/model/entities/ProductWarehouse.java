@@ -1,7 +1,9 @@
 package org.fimba.warehousemanagmentsystem.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,32 +11,36 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Entity
+@Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductWarehouse {
-    @EmbeddedId
-    ProductWarehouseId productWarehouseId;
-
+    /*@EmbeddedId
+    ProductWarehouseId productWarehouseId = new ProductWarehouseId();
+    */
     @ManyToOne
-    @MapsId("productId")
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "PRODUCT_ID")
     ProductEntity product ;
 
     @ManyToOne
-    @MapsId("warehouseId")
-    @JoinColumn(name = "warehouse_id")
-    WarehouseEntity warehouse ;
+    @JoinColumn(name = "USER_ID")
+    UserEntity user ;
 
-    @ManyToOne
+   /* @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
     @JsonIgnore
-    UserEntity userEntity;
+    UserEntity userEntity;*/
 
-    @Column(name = "stockAmount")
-    private Long stockAmount;
+   /* @Column(name = "stockAmount")
+    private Long stockAmount;*/
 
     @Column(name = "transctionDate")
-    private Date transactionDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date transactionDate = new Date();
 
-
+    public ProductWarehouse(ProductEntity product, UserEntity user) {
+        this.product = product;
+        this.user = user;
+    }
 }

@@ -15,8 +15,6 @@ public class ProductEntity extends BaseEntity{
 
 
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
-    private Set<ProductWarehouse> productWarehouses;
 
     @Column(name = "VAT_RATE", precision = 4, scale = 2)
     private BigDecimal vatRate = BigDecimal.valueOf(00.00);

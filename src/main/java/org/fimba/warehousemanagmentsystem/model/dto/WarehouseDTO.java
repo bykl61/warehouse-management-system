@@ -12,6 +12,5 @@ import java.util.Set;
 @Setter
 public class WarehouseDTO extends BaseDTO {
 
-    private ProductWarehouseId productWarehouseId;
     private WarehouseStatus status = WarehouseStatus.ACTIVE;
 }
