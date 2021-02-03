@@ -3,6 +3,7 @@ package org.fimba.warehousemanagmentsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertTOProductDTO;
 import org.fimba.warehousemanagmentsystem.dao.ProductCRUDRepository;
+import org.fimba.warehousemanagmentsystem.dao.ProductOperationRepository;
 import org.fimba.warehousemanagmentsystem.exception.ResourceNotFoundException;
 import org.fimba.warehousemanagmentsystem.model.dto.ProductDTO;
 import org.fimba.warehousemanagmentsystem.model.entities.ProductEntity;
@@ -14,15 +15,14 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @Service
 public class ProductOperationServiceImpl implements ProductOperationService {
+    private final ProductOperationRepository productOperationRepository;
+    @Override
 
-    private final ProductCRUDRepository productCRUDRepository;
-    private final ConvertTOProductDTO convertTOProductDTO;
-
-    public ProductDTO findProductDTOById(Long productID){
-            ProductEntity productEntity = productCRUDRepository.findById(productID)
-                    .orElseThrow(()-> new ResourceNotFoundException("Not null"));
-             ProductDTO productDTO = convertTOProductDTO.convertor(productEntity);
-        return  productDTO;
-
+    public boolean isExist(String code) {
+        if(productOperationRepository.findProductEntityByCode(code)==null){
+            return false;
+        }
+        return true;
     }
 }
+

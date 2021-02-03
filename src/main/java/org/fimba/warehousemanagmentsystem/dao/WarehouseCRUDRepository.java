@@ -1,11 +1,13 @@
 package org.fimba.warehousemanagmentsystem.dao;
 
+import org.fimba.warehousemanagmentsystem.exception.ResourceNotFoundException;
 import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Repository
 public interface WarehouseCRUDRepository extends JpaRepository<WarehouseEntity, Long> {

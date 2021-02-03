@@ -5,16 +5,16 @@ import org.fimba.warehousemanagmentsystem.base.WarehouseAPIResponseHolder;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertToWarehouseDTO;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertToWarehouseEntity;
 import org.fimba.warehousemanagmentsystem.dao.WarehouseCRUDRepository;
+import org.fimba.warehousemanagmentsystem.exception.DuplicateException;
 import org.fimba.warehousemanagmentsystem.exception.ResourceNotFoundException;
-import org.fimba.warehousemanagmentsystem.model.dto.ProductDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
-import org.fimba.warehousemanagmentsystem.model.entities.ProductEntity;
 import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 import org.fimba.warehousemanagmentsystem.service.WarehouseCRUDService;
+import org.fimba.warehousemanagmentsystem.service.WarehouseOperationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 import java.util.Collection;
 import java.util.Date;
@@ -28,16 +28,18 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
     private final ConvertToWarehouseDTO convertToWarehouseDTO;
     private final ConvertToWarehouseEntity convertToWarehouseEntity;
     private final WarehouseCRUDRepository warehouseCRUDRepository;
-    private final ProductOperationServiceImpl productOperationService;
+    private final WarehouseOperationService warehouseOperationService;
 
     @Override
     public WarehouseAPIResponseHolder<Collection<WarehouseDTO>> list() {
         Collection<WarehouseEntity> warehouseEntities = warehouseCRUDRepository.findAllActiveAndPassive();
+             if(warehouseEntities.isEmpty()) {
+                 throw new ResourceNotFoundException("WAREHOUSE LIST NOT FOUND");
+             }
         List<WarehouseDTO> warehouseDTOList = warehouseEntities
                 .stream()
                 .map(convertToWarehouseDTO::convertor)
                 .collect(Collectors.toList());
-
         return new WarehouseAPIResponseHolder<>(warehouseDTOList);
     }
 
@@ -52,6 +54,11 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
 
     @Override
     public WarehouseAPIResponseHolder<WarehouseDTO> create(WarehouseDTO dto) {
+
+        if(warehouseOperationService.isExist(dto.getCode())){
+            throw new DuplicateException("Duplicate Code");
+        }
+
         WarehouseEntity warehouseEntity = convertToWarehouseEntity.convertor(dto);
         warehouseEntity.setCreatedDate(new Date());
 
@@ -62,6 +69,9 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
 
     @Override
     public WarehouseAPIResponseHolder<WarehouseDTO> update(WarehouseDTO dto,Long id) {
+        if(warehouseOperationService.isExist(dto.getCode())){
+            throw new DuplicateException("Duplicate Code");
+        }
         WarehouseEntity updateEntity = warehouseCRUDRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("WAREHOUSE NOT FOUND"));
         Date date = updateEntity.getCreatedDate();

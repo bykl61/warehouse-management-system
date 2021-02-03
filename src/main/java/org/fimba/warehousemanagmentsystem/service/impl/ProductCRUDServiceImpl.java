@@ -5,6 +5,8 @@ import org.fimba.warehousemanagmentsystem.base.WarehouseAPIResponseHolder;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertTOProductDTO;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertTOProductEntity;
 import org.fimba.warehousemanagmentsystem.dao.ProductCRUDRepository;
+import org.fimba.warehousemanagmentsystem.dao.ProductOperationRepository;
+import org.fimba.warehousemanagmentsystem.exception.DuplicateException;
 import org.fimba.warehousemanagmentsystem.exception.ResourceNotFoundException;
 import org.fimba.warehousemanagmentsystem.model.dto.ProductDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
@@ -13,6 +15,7 @@ import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.fimba.warehousemanagmentsystem.model.enums.ProductStatus;
 import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 import org.fimba.warehousemanagmentsystem.service.ProductCRUDService;
+import org.fimba.warehousemanagmentsystem.service.ProductOperationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +30,13 @@ public class ProductCRUDServiceImpl implements ProductCRUDService {
     private final ProductCRUDRepository productCRUDRepository;
     private final ConvertTOProductDTO convertTOProductDTO;
     private final ConvertTOProductEntity convertTOProductEntity;
-
+    private final ProductOperationService productOperationService;
     @Override
     public WarehouseAPIResponseHolder<Collection<ProductDTO>> list() {
-        Collection<ProductEntity> productEntities = productCRUDRepository.findAllActiveAndPassive();
+        Collection<ProductEntity> productEntities = productCRUDRepository.findAllActive();
+        if(productEntities.isEmpty()){
+            throw new ResourceNotFoundException(("PRODUCT LIST NOT FOUND"));
+        }
         List<ProductDTO> productDTOList = productEntities
                 .stream()
                 .map(convertTOProductDTO::convertor)
@@ -48,6 +54,11 @@ public class ProductCRUDServiceImpl implements ProductCRUDService {
 
     @Override
     public WarehouseAPIResponseHolder<ProductDTO> create(ProductDTO dto) {
+
+        if(productOperationService.isExist(dto.getCode())){
+            throw new DuplicateException("Duplicate Code");
+        }
+
         ProductEntity productEntity = convertTOProductEntity.convertor(dto);
         productEntity.setCreatedDate(new Date());
         ProductEntity savedEntity = productCRUDRepository.save(productEntity);
@@ -57,6 +68,11 @@ public class ProductCRUDServiceImpl implements ProductCRUDService {
 
     @Override
     public WarehouseAPIResponseHolder<ProductDTO> update(ProductDTO dto,Long id) {
+
+        if(productOperationService.isExist(dto.getCode())){
+            throw new DuplicateException("Duplicate Code");
+        }
+
         ProductEntity updateEntity = productCRUDRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("PRODUCT NOT FOUND"));
         Date date = updateEntity.getCreatedDate();

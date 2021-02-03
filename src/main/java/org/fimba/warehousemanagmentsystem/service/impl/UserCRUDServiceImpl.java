@@ -5,11 +5,13 @@ import org.fimba.warehousemanagmentsystem.base.WarehouseAPIResponseHolder;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertToUserDTO;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertToUserEntity;
 import org.fimba.warehousemanagmentsystem.dao.UserCRUDRepository;
+import org.fimba.warehousemanagmentsystem.exception.DuplicateException;
 import org.fimba.warehousemanagmentsystem.model.dto.UserDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
 import org.fimba.warehousemanagmentsystem.model.entities.UserEntity;
 import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.fimba.warehousemanagmentsystem.service.UserCRUDService;
+import org.fimba.warehousemanagmentsystem.service.UserOperationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class UserCRUDServiceImpl implements UserCRUDService {
+
     private final UserCRUDRepository userCRUDRepository;
     private final ConvertToUserDTO convertToUserDTO;
     private final ConvertToUserEntity convertToUserEntity;
+    private final UserOperationService userOperationService;
 
     @Override
     public WarehouseAPIResponseHolder<Collection<UserDTO>> list() {
@@ -41,6 +45,11 @@ public class UserCRUDServiceImpl implements UserCRUDService {
 
     @Override
     public WarehouseAPIResponseHolder<UserDTO> create(UserDTO dto) {
+
+        if(userOperationService.isExist(dto.getCode(), dto.getEmail())){
+            throw new DuplicateException("Duplicate Code or Email");
+        }
+
         UserEntity userEntity = convertToUserEntity.convertor(dto);
         userEntity.setCreatedDate(new Date());
         UserEntity savedEntity = userCRUDRepository.save(userEntity);

@@ -11,10 +11,19 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class WarehouseAPIExceptionHandler{
 
+    @ExceptionHandler(DuplicateException.class)
+    public ResponseEntity<?> DuplicateException(DuplicateException exception){
+        WarehouseAPIResponseError warehouseAPIResponseError =
+                new WarehouseAPIResponseError("DUPLICATE_DATA",
+                        exception.getMessage());
+        return new ResponseEntity<>(warehouseAPIResponseError,HttpStatus.BAD_REQUEST);
+    }
+
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> ExceptionHandlingResourceNotFound(ResourceNotFoundException exception){
         WarehouseAPIResponseError warehouseAPIResponseError =
-                new WarehouseAPIResponseError("ResourceNotFoundException",
+                new WarehouseAPIResponseError("NOT_FOUND",
                         exception.getMessage());
         return new ResponseEntity<>(warehouseAPIResponseError,HttpStatus.NOT_FOUND);
     }
@@ -23,7 +32,7 @@ public class WarehouseAPIExceptionHandler{
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> ExceptionHandlingValidation(MethodArgumentNotValidException exception){
         WarehouseAPIResponseError warehouseAPIResponseError =
-                new WarehouseAPIResponseError("VALIDATION ERROR",
+                new WarehouseAPIResponseError("VALIDATION_ERROR",
                         exception.getBindingResult().getFieldError().getDefaultMessage());
 
         return  new ResponseEntity<>(warehouseAPIResponseError,HttpStatus.BAD_REQUEST);

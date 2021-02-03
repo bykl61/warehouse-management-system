@@ -1,5 +1,7 @@
 package org.fimba.warehousemanagmentsystem.service;
 
-public interface ProductOperationService {
+
+
+public interface WarehouseOperationService {
     boolean isExist(String code);
 }
