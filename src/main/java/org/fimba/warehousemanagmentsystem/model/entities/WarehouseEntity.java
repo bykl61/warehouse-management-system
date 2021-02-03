@@ -15,12 +15,14 @@ public class WarehouseEntity extends BaseEntity{
 
 
 
-    @ElementCollection
+   /*@ElementCollection
     @CollectionTable(
             name= "PRODUCT_WAREHOUSE",
             joinColumns = @JoinColumn(name = "WAREHOUSE_ID")
     )
-    private Set<ProductWarehouse> productWarehouses = new HashSet<>();
+    private Set<ProductWarehouse> productWarehouses = new HashSet<>();*/
+
+
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS",length = 7,nullable = false)

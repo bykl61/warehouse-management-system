@@ -9,6 +9,6 @@ import java.util.Collection;
 
 @Repository
 public interface ProductCRUDRepository extends JpaRepository<ProductEntity, Long> {
-    @Query("SELECT w FROM ProductEntity w WHERE w.status ='ACTIVE' OR w.status ='PASSIVE' ")
+    @Query("SELECT w FROM ProductEntity w WHERE w.status ='ACTIVE' ")
     Collection<ProductEntity> findAllActiveAndPassive();
 }

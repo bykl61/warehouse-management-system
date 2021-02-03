@@ -33,6 +33,11 @@ public class UserCRUDServiceImpl implements UserCRUDService {
                 .collect(Collectors.toList());
         return new WarehouseAPIResponseHolder<>(userDTOS, HttpStatus.OK);
     }
+    @Override
+    public WarehouseAPIResponseHolder<UserDTO> getById(Long id) {
+        userCRUDRepository.findById(id);
+        return null;
+    }
 
     @Override
     public WarehouseAPIResponseHolder<UserDTO> create(UserDTO dto) {
@@ -44,12 +49,12 @@ public class UserCRUDServiceImpl implements UserCRUDService {
     }
 
     @Override
-    public WarehouseAPIResponseHolder<UserDTO> update(UserDTO dto) {
+    public WarehouseAPIResponseHolder<UserDTO> update(UserDTO dto,Long id) {
         return null;
     }
 
     @Override
-    public WarehouseAPIResponseHolder<?> delete(UserDTO id) {
+    public WarehouseAPIResponseHolder<?> delete(Long id) {
         return null;
     }
 }

@@ -10,19 +10,19 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class ProductDTO extends BaseDTO{
-    @NotNull
+    @NotNull(message = "Vat Rate Price is not null")
     @PositiveOrZero(message = "You do not negative")
     private BigDecimal vatRate;
 
-    @NotNull
+    @NotNull(message = "Vat Amount Price is not null")
     @PositiveOrZero(message = "You do not negative")
     private BigDecimal vatAmount;
 
     @PositiveOrZero(message = "You do not negative")
-    @NotNull
+    @NotNull(message = "Vat Price is not null")
     private BigDecimal price;
 
-    @NotNull
+    @NotNull(message = "Vat Included Price is not null")
     @PositiveOrZero(message = "You do not negative")
     private BigDecimal vatIncludedPrice;
 

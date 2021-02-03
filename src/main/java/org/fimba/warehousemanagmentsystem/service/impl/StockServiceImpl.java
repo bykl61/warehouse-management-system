@@ -33,9 +33,9 @@ public class StockServiceImpl implements StockService {
                 .orElseThrow(() -> new ResourceNotFoundException("Not found warehouseEntity"));
 
         em.createNativeQuery("insert into product_warehouse values(?,?,?) ")
-                .setParameter(1,stockUpdateDTO.getProductID())
-                .setParameter(2,stockUpdateDTO.getUserID())
-                .setParameter(3,stockUpdateDTO.getWarehouseID())
+                .setParameter(1,stockUpdateDTO.getWarehouseID())
+                .setParameter(2,stockUpdateDTO.getProductID())
+                .setParameter(3,stockUpdateDTO.getUserID())
                 .executeUpdate();
 
 
@@ -60,8 +60,7 @@ public class StockServiceImpl implements StockService {
 
       List<WarehouseEntity> warehouseEntities = em.createQuery(
                "select w from WarehouseEntity w "+
-               "join w.productWarehouses wp " +
-                       "where wp.product = '1'")
+               "join w.productWarehouses wp ")
                .getResultList();
         return warehouseEntities;
 

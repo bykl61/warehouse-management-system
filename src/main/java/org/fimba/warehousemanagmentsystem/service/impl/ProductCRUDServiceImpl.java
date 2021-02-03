@@ -5,9 +5,13 @@ import org.fimba.warehousemanagmentsystem.base.WarehouseAPIResponseHolder;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertTOProductDTO;
 import org.fimba.warehousemanagmentsystem.convertor.ConvertTOProductEntity;
 import org.fimba.warehousemanagmentsystem.dao.ProductCRUDRepository;
+import org.fimba.warehousemanagmentsystem.exception.ResourceNotFoundException;
 import org.fimba.warehousemanagmentsystem.model.dto.ProductDTO;
+import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
 import org.fimba.warehousemanagmentsystem.model.entities.ProductEntity;
+import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.fimba.warehousemanagmentsystem.model.enums.ProductStatus;
+import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 import org.fimba.warehousemanagmentsystem.service.ProductCRUDService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,6 +38,13 @@ public class ProductCRUDServiceImpl implements ProductCRUDService {
 
         return new WarehouseAPIResponseHolder<>(productDTOList,HttpStatus.OK);
     }
+    public WarehouseAPIResponseHolder<ProductDTO> getById(Long id) {
+        ProductEntity productEntity = productCRUDRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("PRODUCT NOT FOUND"));
+        ProductDTO productDTO = convertTOProductDTO.convertor(productEntity);
+
+        return new WarehouseAPIResponseHolder<>(productDTO,HttpStatus.OK);
+    }
 
     @Override
     public WarehouseAPIResponseHolder<ProductDTO> create(ProductDTO dto) {
@@ -45,9 +56,11 @@ public class ProductCRUDServiceImpl implements ProductCRUDService {
     }
 
     @Override
-    public WarehouseAPIResponseHolder<ProductDTO> update(ProductDTO dto) {
-        ProductEntity updateEntity = productCRUDRepository.getOne(dto.getId());
+    public WarehouseAPIResponseHolder<ProductDTO> update(ProductDTO dto,Long id) {
+        ProductEntity updateEntity = productCRUDRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("PRODUCT NOT FOUND"));
         Date date = updateEntity.getCreatedDate();
+        dto.setId(id);
         updateEntity = convertTOProductEntity.convertor(dto);
         updateEntity.setCreatedDate(date);
         updateEntity.setUpdatedDate(new Date());
@@ -58,8 +71,9 @@ public class ProductCRUDServiceImpl implements ProductCRUDService {
     }
 
     @Override
-    public WarehouseAPIResponseHolder<?> delete(ProductDTO id) {
-        ProductEntity productEntity= productCRUDRepository.getOne(id.getId());
+    public WarehouseAPIResponseHolder<?> delete(Long id) {
+        ProductEntity productEntity = productCRUDRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("PRODUCT NOT FOUND"));
         productEntity.setStatus(ProductStatus.PASSIVE);
         productCRUDRepository.save(productEntity);
         return new WarehouseAPIResponseHolder<>(HttpStatus.OK);

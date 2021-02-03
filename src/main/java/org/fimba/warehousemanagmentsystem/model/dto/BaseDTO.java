@@ -18,7 +18,7 @@ public class BaseDTO implements Serializable {
     @NotEmpty(message = "Name is not empty")
     private String name;
 
-    @NotEmpty(message = "Name is not empty")
+    @NotEmpty(message = "Code is not empty")
     private String code;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")

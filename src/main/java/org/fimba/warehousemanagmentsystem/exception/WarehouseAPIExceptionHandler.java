@@ -11,10 +11,19 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class WarehouseAPIExceptionHandler{
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<?> ExceptionHandlingResourceNotFound(ResourceNotFoundException exception){
+        WarehouseAPIResponseError warehouseAPIResponseError =
+                new WarehouseAPIResponseError("ResourceNotFoundException",
+                        exception.getMessage());
+        return new ResponseEntity<>(warehouseAPIResponseError,HttpStatus.NOT_FOUND);
+    }
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> ExceptionHandlingValidation(MethodArgumentNotValidException exception){
         WarehouseAPIResponseError warehouseAPIResponseError =
-                new WarehouseAPIResponseError(exception.getBindingResult().getObjectName(),
+                new WarehouseAPIResponseError("VALIDATION ERROR",
                         exception.getBindingResult().getFieldError().getDefaultMessage());
 
         return  new ResponseEntity<>(warehouseAPIResponseError,HttpStatus.BAD_REQUEST);

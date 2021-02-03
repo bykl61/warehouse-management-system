@@ -6,6 +6,7 @@ import org.fimba.warehousemanagmentsystem.model.enums.ProductStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter

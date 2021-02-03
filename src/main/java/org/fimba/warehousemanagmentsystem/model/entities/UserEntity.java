@@ -7,6 +7,8 @@ import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,8 +16,7 @@ import javax.validation.constraints.Email;
 public class UserEntity extends BaseEntity{
 
 
-
-    @Column(name = "EMAİL")
+    @Column(name = "EMAIL")
     private String email;
 
 
