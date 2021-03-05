@@ -6,7 +6,7 @@ class HeaderComponent extends Component {
             <div>
                <header>
                     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-                        <div><a href="#" className="navbar-brand">WarehouseAPI</a></div>
+                        <div><a href="/login" className="navbar-brand">WarehouseAPI</a></div>
                         <div><a href="/warehouses" className="navbar-brand">Warehouses</a></div>
                         <div><a href="/products" className="navbar-brand">Products</a></div>
                     </nav>

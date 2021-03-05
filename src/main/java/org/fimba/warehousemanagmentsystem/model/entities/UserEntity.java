@@ -1,13 +1,11 @@
 package org.fimba.warehousemanagmentsystem.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.fimba.warehousemanagmentsystem.model.enums.UserStatus;
-import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -26,4 +24,9 @@ public class UserEntity extends BaseEntity{
     @Column(name = "STATUS",length = 7)
     @Enumerated(value=EnumType.STRING)
     private UserStatus status = UserStatus.ACTIVE;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userEntity")
+    Set<ProductWarehouseEntity> warehouseEntities;
+
 }

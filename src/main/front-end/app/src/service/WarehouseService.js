@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const WAREHOUSE_API_BASE_URL = "http://localhost:8080/warehouse";
+const WAREHOUSE_API_BASE_URL = "http://localhost:8080/warehouses";
 
 class WarehouseService {
 

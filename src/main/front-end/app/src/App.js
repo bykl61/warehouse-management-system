@@ -19,7 +19,6 @@ function App() {
                 <HeaderComponent/>
                   <div className= "container">
                      <Switch>
-
                          <Route path = "/login"  component={LoginUserComponent}></Route>
                        <Route path = "/" exact component={LoginUserComponent}></Route>
                        <Route path = "/warehouses" component={WarehouseListComponents}></Route>

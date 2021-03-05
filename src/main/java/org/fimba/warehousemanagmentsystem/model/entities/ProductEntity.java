@@ -1,17 +1,19 @@
 package org.fimba.warehousemanagmentsystem.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.fimba.warehousemanagmentsystem.model.enums.ProductStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
+@RequiredArgsConstructor
 public class ProductEntity extends BaseEntity{
 
 
@@ -35,4 +37,11 @@ public class ProductEntity extends BaseEntity{
     @Enumerated(value = EnumType.STRING)
     @Column(name = "STATUS", length = 7, nullable = false)
     private ProductStatus status = ProductStatus.ACTIVE;
+
+    /*@ManyToMany(mappedBy = "productEntities")
+    Set<WarehouseEntity> warehouseEntities;*/
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "productEntity")
+    Set<ProductWarehouseEntity> warehouseEntities;
 }

@@ -1,5 +1,6 @@
 package org.fimba.warehousemanagmentsystem.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
@@ -15,17 +16,15 @@ public class WarehouseEntity extends BaseEntity{
 
 
 
-   /*@ElementCollection
-    @CollectionTable(
-            name= "PRODUCT_WAREHOUSE",
-            joinColumns = @JoinColumn(name = "WAREHOUSE_ID")
-    )
-    private Set<ProductWarehouse> productWarehouses = new HashSet<>();*/
-
-
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS",length = 7,nullable = false)
     private WarehouseStatus status = WarehouseStatus.ACTIVE;
+
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "warehouseEntity")
+    Set<ProductWarehouseEntity> warehouseEntities;
 
 }

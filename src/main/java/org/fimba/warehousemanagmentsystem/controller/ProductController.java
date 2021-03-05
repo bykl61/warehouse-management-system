@@ -12,7 +12,7 @@ import java.util.Collection;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/warehouseapi/products")
+@RequestMapping("/products")
 public class ProductController {
     private final ProductCRUDService productCRUDService;
 

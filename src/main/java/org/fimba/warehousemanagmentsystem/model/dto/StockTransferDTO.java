@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class StockTransferDTO {
 
     private Long productId;
-    private Long fromId;
-    private Long toId;
+    private Long fromWarehouseId;
+    private Long toWarehouseId;
 }

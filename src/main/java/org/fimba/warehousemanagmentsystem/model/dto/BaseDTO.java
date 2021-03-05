@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class BaseDTO implements Serializable {
+public class BaseDTO implements Serializable  {
     private Long id;
 
 

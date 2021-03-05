@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 
 
-const LOGIN_API_BASE_URL = "http://localhost:8080/warehouseapi/user/login";
+const LOGIN_API_BASE_URL = "http://localhost:8080/login";
 
 class LoginService extends Component {
     postLogin(user){

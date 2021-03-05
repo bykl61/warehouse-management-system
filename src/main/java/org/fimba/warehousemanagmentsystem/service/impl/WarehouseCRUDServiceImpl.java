@@ -8,7 +8,9 @@ import org.fimba.warehousemanagmentsystem.dao.WarehouseCRUDRepository;
 import org.fimba.warehousemanagmentsystem.exception.DuplicateException;
 import org.fimba.warehousemanagmentsystem.exception.ResourceNotFoundException;
 import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
+import org.fimba.warehousemanagmentsystem.model.entities.ProductEntity;
 import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
+import org.fimba.warehousemanagmentsystem.model.enums.ProductStatus;
 import org.fimba.warehousemanagmentsystem.model.enums.WarehouseStatus;
 import org.fimba.warehousemanagmentsystem.service.WarehouseCRUDService;
 import org.fimba.warehousemanagmentsystem.service.WarehouseOperationService;
@@ -32,7 +34,7 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
 
     @Override
     public WarehouseAPIResponseHolder<Collection<WarehouseDTO>> list() {
-        Collection<WarehouseEntity> warehouseEntities = warehouseCRUDRepository.findAllActiveAndPassive();
+        Collection<WarehouseEntity> warehouseEntities = warehouseCRUDRepository.findAllActive();
              if(warehouseEntities.isEmpty()) {
                  throw new ResourceNotFoundException("WAREHOUSE LIST NOT FOUND");
              }
@@ -49,6 +51,7 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
             WarehouseDTO warehouseDTO = convertToWarehouseDTO.convertor(warehouseEntity);
 
          return new WarehouseAPIResponseHolder<>(warehouseDTO,HttpStatus.OK);
+
     }
 
 
@@ -72,7 +75,7 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
         if(warehouseOperationService.isExist(dto.getCode())){
             throw new DuplicateException("Duplicate Code");
         }
-        WarehouseEntity updateEntity = warehouseCRUDRepository.findById(id)
+       WarehouseEntity updateEntity = warehouseCRUDRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("WAREHOUSE NOT FOUND"));
         Date date = updateEntity.getCreatedDate();
         dto.setId(id);
@@ -81,6 +84,7 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
         updateEntity.setUpdatedDate(new Date());
         warehouseCRUDRepository.save(updateEntity);
         WarehouseDTO warehouseDTO = convertToWarehouseDTO.convertor(updateEntity);
+        
 
         return new WarehouseAPIResponseHolder<>(warehouseDTO,HttpStatus.OK);
 
@@ -89,8 +93,8 @@ public class WarehouseCRUDServiceImpl implements WarehouseCRUDService {
     @Override
     public WarehouseAPIResponseHolder<?> delete(Long id) {
         WarehouseEntity warehouseEntity = warehouseCRUDRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("WAREHOUSE NOT FOUND"));
-        warehouseEntity.setStatus(WarehouseStatus.DELETED);
+                .orElseThrow(() -> new ResourceNotFoundException("PRODUCT NOT FOUND"));
+        warehouseEntity.setStatus(WarehouseStatus.PASSIVE);
         warehouseCRUDRepository.save(warehouseEntity);
         return new WarehouseAPIResponseHolder<>(HttpStatus.OK);
 
