@@ -10,13 +10,13 @@ import java.io.Serializable;
 @Embeddable
 public class ProductWarehouseId implements Serializable {
 
-    @Column(name = "product_Id")
+    @Column(name = "products")
     private Long productId ;
 
-    @Column(name = "warehouse_Id")
+    @Column(name = "warehouses")
     private Long warehouseId ;
 
-    @Column(name = "user_Id")
+    @Column(name = "users")
     private Long userId ;
 
 }

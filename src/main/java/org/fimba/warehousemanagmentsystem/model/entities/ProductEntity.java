@@ -38,8 +38,7 @@ public class ProductEntity extends BaseEntity{
     @Column(name = "STATUS", length = 7, nullable = false)
     private ProductStatus status = ProductStatus.ACTIVE;
 
-    /*@ManyToMany(mappedBy = "productEntities")
-    Set<WarehouseEntity> warehouseEntities;*/
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "productEntity")

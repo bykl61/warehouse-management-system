@@ -20,25 +20,26 @@ public class ProductWarehouseEntity {
 
     @ManyToOne
     @MapsId("productId")
-    @JoinColumn(name = "product")
+    @JoinColumn(name = "products")
     private ProductEntity productEntity;
 
     @ManyToOne
     @MapsId("warehouseId")
-    @JoinColumn(name = "warehouse")
+    @JoinColumn(name = "warehouses")
     private WarehouseEntity warehouseEntity;
 
     @ManyToOne
     @MapsId("userId")
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "users")
     private UserEntity userEntity;
 
 
-    @Column(name = "stok")
+    @Column(name = "stoks")
     private Long stok;
 
 
     @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "dates")
     private Date date;
 
 
