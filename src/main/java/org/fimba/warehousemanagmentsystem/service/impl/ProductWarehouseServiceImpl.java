@@ -2,10 +2,7 @@ package org.fimba.warehousemanagmentsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.fimba.warehousemanagmentsystem.dao.ProductCRUDRepository;
-import org.fimba.warehousemanagmentsystem.dao.ProductWarehouseRepository;
-import org.fimba.warehousemanagmentsystem.dao.UserCRUDRepository;
-import org.fimba.warehousemanagmentsystem.dao.WarehouseCRUDRepository;
+import org.fimba.warehousemanagmentsystem.dao.*;
 import org.fimba.warehousemanagmentsystem.exception.ResourceNotFoundException;
 import org.fimba.warehousemanagmentsystem.model.dto.ProductWarehouseDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.StockTransferDTO;
@@ -15,6 +12,7 @@ import org.fimba.warehousemanagmentsystem.model.entities.ProductWarehouseEntity;
 import org.fimba.warehousemanagmentsystem.model.entities.UserEntity;
 import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.fimba.warehousemanagmentsystem.service.ProductWarehouseService;
+import org.fimba.warehousemanagmentsystem.service.TransferOperationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,7 +29,8 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
     private final ProductCRUDRepository productCRUDRepository;
     private final ProductWarehouseRepository productWarehouseRepository;
     private final UserCRUDRepository userCRUDRepository;
-
+    private final TransferOperationService transferOperationService;
+    private final TransferOperationRepository transferOperationRepository;
 
     @Override
     public ResponseEntity<?> add(ProductWarehouseDTO dto) {
@@ -62,14 +61,36 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
 
     @Override
     public ResponseEntity<?> transfer(StockTransferDTO dto) {
-
-
-
-
         StockTransferDTO transferDTO = new StockTransferDTO();
         transferDTO.setToWarehouseId(dto.getToWarehouseId());
         transferDTO.setFromWarehouseId(dto.getFromWarehouseId());
         transferDTO.setProductId(dto.getProductId());
+
+       boolean control = transferOperationService.isExist(transferDTO.getProductId(), transferDTO.getToWarehouseId());
+
+
+
+       if(control){
+            ProductWarehouseEntity warehouseEntity = transferOperationRepository.isExist(transferDTO.getProductId(), transferDTO.getToWarehouseId());
+            Long stok = warehouseEntity.getStok();
+            log.info("Stok Getirildi");
+            productWarehouseRepository.delete(warehouseEntity);
+            log.info("ProductWarehouse Silindi");
+
+            ProductWarehouseEntity fromWarehouseEntity = transferOperationRepository.isExist(transferDTO.getProductId(),transferDTO.getFromWarehouseId());
+            Long stok2 = fromWarehouseEntity.getStok();
+            ProductWarehouseDTO productWarehouseDTO = new ProductWarehouseDTO();
+            productWarehouseDTO.setProductId(transferDTO.getProductId());
+            productWarehouseDTO.setWarehouseId(transferDTO.getToWarehouseId());
+            productWarehouseDTO.setUserId(1L);
+            productWarehouseDTO.setStok(stok + stok2);
+
+            this.add(productWarehouseDTO);
+            log.info("Yeni Kayıt Eklendi");
+           return ResponseEntity.ok(HttpStatus.OK);
+       }
+
+
         productWarehouseRepository.transfer(transferDTO.getToWarehouseId(),transferDTO.getFromWarehouseId(),transferDTO.getProductId());
 
         return ResponseEntity.ok(HttpStatus.OK);
