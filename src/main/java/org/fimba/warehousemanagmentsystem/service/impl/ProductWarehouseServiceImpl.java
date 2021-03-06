@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Date;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -34,7 +35,7 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
 
     @Override
     public ResponseEntity<?> add(ProductWarehouseDTO dto) {
-    // With the ID's taken from the user, we pull the objects from the database.
+        // With the ID's taken from the user, we pull the objects from the database.
         WarehouseEntity warehouseEntity = warehouseCRUDRepository.findById(dto.getWarehouseId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not Found Warehouse"));
 
@@ -64,17 +65,25 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
 
 
 
-        return null;
+
+        StockTransferDTO transferDTO = new StockTransferDTO();
+        transferDTO.setToWarehouseId(dto.getToWarehouseId());
+        transferDTO.setFromWarehouseId(dto.getFromWarehouseId());
+        transferDTO.setProductId(dto.getProductId());
+        productWarehouseRepository.transfer(transferDTO.getToWarehouseId(),transferDTO.getFromWarehouseId(),transferDTO.getProductId());
+
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> update(StockUpdateDTO dto) {
+
         return null;
     }
 
     @Override
     public ResponseEntity<Collection<?>> summaries() {
-        Collection<ProductWarehouseEntity> productWarehouseEntity = productWarehouseRepository.findAllByWarehouseEntity();
+        Collection<ProductWarehouseEntity> productWarehouseEntity = productWarehouseRepository.findAllByProductWarehouse();
         log.info(productWarehouseEntity.toString());
         return ResponseEntity.ok().body(productWarehouseEntity);
     }

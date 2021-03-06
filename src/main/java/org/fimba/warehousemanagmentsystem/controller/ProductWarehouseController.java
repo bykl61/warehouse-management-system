@@ -39,10 +39,10 @@ public class ProductWarehouseController {
 
 
 
-    /*@GetMapping
+    @GetMapping("/warehouses")
     public ResponseEntity<?> transfer(@RequestBody StockTransferDTO dto) {
         return productWarehouseService.transfer(dto);
-    }*/
+    }
 
     @GetMapping
     public ResponseEntity<?> summaries() {
