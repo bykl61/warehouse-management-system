@@ -3,10 +3,9 @@ package org.fimba.warehousemanagmentsystem.service;
 import org.fimba.warehousemanagmentsystem.model.dto.ProductWarehouseDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.StockTransferDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.StockUpdateDTO;
-import org.springframework.http.HttpStatus;
+import org.fimba.warehousemanagmentsystem.model.entities.ProductWarehouseEntity;
 import org.springframework.http.ResponseEntity;
 
-import java.awt.*;
 import java.util.Collection;
 
 public interface ProductWarehouseService{
@@ -18,4 +17,6 @@ public interface ProductWarehouseService{
     ResponseEntity<?> update(StockUpdateDTO dto);
 
     ResponseEntity<Collection<?>> summaries();
+
+    ResponseEntity<Collection<ProductWarehouseEntity>> list();
 }

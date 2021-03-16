@@ -12,12 +12,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.List;
 
 @Repository
 public interface ProductWarehouseRepository extends JpaRepository<ProductWarehouseEntity,Long> {
-    @Query("select w from  ProductWarehouseEntity w ")
-    Collection<ProductWarehouseEntity>  findAllByProductWarehouse();
+
+    @Query("select p from ProductWarehouseEntity p")
+    Collection<ProductWarehouseEntity> list();
+
+    @Query("select w.warehouseEntity.name,w.productEntity.name,w.productEntity.price,w.productEntity.vatAmount," +
+            "w.productEntity.vatIncludedPrice from  ProductWarehouseEntity w")
+    Collection<?>  findAllByProductWarehouse();
 
     @Transactional
     @Modifying
@@ -25,6 +29,9 @@ public interface ProductWarehouseRepository extends JpaRepository<ProductWarehou
             "and productEntity.id = :productId")
     void transfer(@Param("toWarehouseId") Long toWarehouseId, @Param("fromWarehouseId") Long fromWarehouseId, @Param("productId") Long productId);
 
-
+    @Transactional
+    @Query("select p from ProductWarehouseEntity p where p.warehouseEntity.id= :warehouseId " +
+            "and p.productEntity.id= :productId")
+    ProductWarehouseEntity update(@Param("warehouseId") Long warehouseId, @Param("productId") Long productId);
 
 }

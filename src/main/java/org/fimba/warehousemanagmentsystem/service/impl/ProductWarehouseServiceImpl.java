@@ -3,6 +3,7 @@ package org.fimba.warehousemanagmentsystem.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fimba.warehousemanagmentsystem.dao.*;
+import org.fimba.warehousemanagmentsystem.exception.DuplicateException;
 import org.fimba.warehousemanagmentsystem.exception.ResourceNotFoundException;
 import org.fimba.warehousemanagmentsystem.model.dto.ProductWarehouseDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.StockTransferDTO;
@@ -16,9 +17,11 @@ import org.fimba.warehousemanagmentsystem.service.TransferOperationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,6 +37,13 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
 
     @Override
     public ResponseEntity<?> add(ProductWarehouseDTO dto) {
+
+        boolean controll = transferOperationService.isExist(dto.getProductId(), dto.getWarehouseId());
+
+        if(controll){
+            throw new DuplicateException("Product and Warehouse already exist");
+        }
+
         // With the ID's taken from the user, we pull the objects from the database.
         WarehouseEntity warehouseEntity = warehouseCRUDRepository.findById(dto.getWarehouseId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not Found Warehouse"));
@@ -60,38 +70,41 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> transfer(StockTransferDTO dto) {
         StockTransferDTO transferDTO = new StockTransferDTO();
         transferDTO.setToWarehouseId(dto.getToWarehouseId());
         transferDTO.setFromWarehouseId(dto.getFromWarehouseId());
         transferDTO.setProductId(dto.getProductId());
+        transferDTO.setUserId(dto.getUserId());
 
-       boolean control = transferOperationService.isExist(transferDTO.getProductId(), transferDTO.getToWarehouseId());
+        boolean control = transferOperationService.isExist(transferDTO.getProductId(), transferDTO.getToWarehouseId());
 
 
-
-       if(control){
-            ProductWarehouseEntity warehouseEntity = transferOperationRepository.isExist(transferDTO.getProductId(), transferDTO.getToWarehouseId());
-            Long stok = warehouseEntity.getStok();
+        if (control) {
+            log.info("Duplicate Operation");
+            ProductWarehouseEntity fromWarehouseEntity = transferOperationRepository.isExist(transferDTO.getProductId(), transferDTO.getFromWarehouseId());
+            Long stok1 = fromWarehouseEntity.getStok();
             log.info("Stok Getirildi");
-            productWarehouseRepository.delete(warehouseEntity);
+            productWarehouseRepository.delete(fromWarehouseEntity);
             log.info("ProductWarehouse Silindi");
 
-            ProductWarehouseEntity fromWarehouseEntity = transferOperationRepository.isExist(transferDTO.getProductId(),transferDTO.getFromWarehouseId());
-            Long stok2 = fromWarehouseEntity.getStok();
-            ProductWarehouseDTO productWarehouseDTO = new ProductWarehouseDTO();
-            productWarehouseDTO.setProductId(transferDTO.getProductId());
-            productWarehouseDTO.setWarehouseId(transferDTO.getToWarehouseId());
-            productWarehouseDTO.setUserId(1L);
-            productWarehouseDTO.setStok(stok + stok2);
+            ProductWarehouseEntity toWarehouseEntity = transferOperationRepository.isExist(transferDTO.getProductId(), transferDTO.getToWarehouseId());
+            Long stok2 = toWarehouseEntity.getStok();
 
-            this.add(productWarehouseDTO);
+            UserEntity userEntity = userCRUDRepository.getOne(dto.getUserId());
+
+            toWarehouseEntity.setUserEntity(userEntity);
+            toWarehouseEntity.setStok(stok1 + stok2);
+            productWarehouseRepository.save(toWarehouseEntity);
+
+
             log.info("Yeni Kayıt Eklendi");
-           return ResponseEntity.ok(HttpStatus.OK);
-       }
+            return ResponseEntity.ok(HttpStatus.OK);
+        }
 
-
-        productWarehouseRepository.transfer(transferDTO.getToWarehouseId(),transferDTO.getFromWarehouseId(),transferDTO.getProductId());
+        log.info("Transfer Operation");
+        productWarehouseRepository.transfer(transferDTO.getToWarehouseId(), transferDTO.getFromWarehouseId(), transferDTO.getProductId());
 
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -99,13 +112,33 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
     @Override
     public ResponseEntity<?> update(StockUpdateDTO dto) {
 
-        return null;
+        boolean control = transferOperationService.isExist(dto.getProductId(), dto.getWarehouseId());
+
+        if(!control){
+            throw new ResourceNotFoundException("Not found warehouse and product");
+        }
+
+        ProductWarehouseEntity productWarehouseEntity =
+                productWarehouseRepository.update(dto.getWarehouseId(), dto.getProductId());
+        productWarehouseEntity.setStok(dto.getStock());
+
+
+
+        productWarehouseRepository.save(productWarehouseEntity);
+
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Collection<?>> summaries() {
-        Collection<ProductWarehouseEntity> productWarehouseEntity = productWarehouseRepository.findAllByProductWarehouse();
+        Collection<?> productWarehouseEntity = productWarehouseRepository.findAllByProductWarehouse();
         log.info(productWarehouseEntity.toString());
         return ResponseEntity.ok().body(productWarehouseEntity);
+    }
+
+    @Override
+    public ResponseEntity<Collection<ProductWarehouseEntity>> list() {
+        Collection<ProductWarehouseEntity> productWarehouseEntities = productWarehouseRepository.list();
+        return ResponseEntity.ok().body(productWarehouseEntities);
     }
 }

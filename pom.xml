@@ -13,42 +13,39 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>WarehouseManagmentSystemApi</name>
     <description>WarehouseAPI</description>
+
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
-        <node.version>v10.13.0</node.version>
-        <npm.version>v1.12.1</npm.version>
-      <!--  <frontend.dir>${project.basedir}/src/main/front-end/app</frontend.dir>-->
     </properties>
 
 
 
 
     <dependencies>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-
-      <!-- <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>5.4.2</version>
-        </dependency>
+        <!-- Security -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency> -->
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- DevTools -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -56,17 +53,29 @@
             <version>2.4.2</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
+        <!-- Postgres -->
 
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+
+
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -83,6 +92,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.fimba</groupId>
             <artifactId>demo</artifactId>
@@ -98,6 +113,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.4.2</version>
                 <configuration>
                     <excludes>
                         <exclude>
@@ -107,217 +123,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-
-
-
-
-
-
-
-           <!-- <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.6</version>
-                <configuration>
-                    <nodeVersion>v8.11.3</nodeVersion>
-                    <npmVersion>6.1.0</npmVersion>
-                    <workingDirectory>src/main/front-end/app</workingDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>npm run build</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin> -->
-
-
-
-
-
-        <!-- <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <id>npm-install</id>
-
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-
-                        <phase>prepare-package</phase>
-
-                        <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>install</argument>
-                                <argument>no-audit</argument>
-                            </arguments>
-                            <workingDirectory>${frontend.dir}</workingDirectory>
-                        </configuration>
-
-                    </execution>
-
-                    <execution>
-                        <id>npm-run-build</id>
-
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-
-                        <phase>prepare-package</phase>
-
-                        <configuration>
-                            <executable>npm</executable>
-                            <arguments>
-                                <argument>run</argument>
-                                <argument>build</argument>
-                            </arguments>
-                            <workingDirectory>${frontend.dir}</workingDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
-
-                <executions>
-                    <execution>
-                        <id>copy-front-end/app-build</id>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <phase>prepare-package</phase>
-                        <configuration>
-                            <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${frontend.dir}/build</directory>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>-->
         </plugins>
     </build>
-
-
-   <!-- <profiles>
-    <profile>
-        <id>dev</id>
-        <activation>
-            <activeByDefault>true</activeByDefault>
-        </activation>
-        <properties>
-            <spring.profiles.active>dev</spring.profiles.active>
-        </properties>
-    </profile>
-    <profile>
-        <id>prod</id>
-        <build>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <id>copy-resources</id>
-                            <phase>process-classes</phase>
-                            <goals>
-                                <goal>copy-resources</goal>
-                            </goals>
-                            <configuration>
-                                <outputDirectory>${basedir}/target/classes/static</outputDirectory>
-                                <resources>
-                                    <resource>
-                                        <directory>front-end/build</directory>
-                                    </resource>
-                                </resources>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>com.github.eirslett</groupId>
-                    <artifactId>frontend-maven-plugin</artifactId>
-                    <version>${frontend-maven-plugin.version}</version>
-                    <configuration>
-                        <workingDirectory>front-end</workingDirectory>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>install node</id>
-                            <goals>
-                                <goal>install-node-and-npm</goal>
-                            </goals>
-                            <configuration>
-                                <nodeVersion>${node.version}</nodeVersion>
-                                <npmVersion>${npm.version}</npmVersion>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>npm install</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <phase>generate-resources</phase>
-                        </execution>
-                        <execution>
-                            <id>npm test</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <phase>test</phase>
-                            <configuration>
-                                <arguments>test</arguments>
-                                <environmentVariables>
-                                    <CI>true</CI>
-                                </environmentVariables>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>npm build</id>
-                            <goals>
-                                <goal>npm</goal>
-                            </goals>
-                            <phase>compile</phase>
-                            <configuration>
-                                <arguments>build</arguments>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </build>
-        <properties>
-            <spring.profiles.active>prod</spring.profiles.active>
-        </properties>
-    </profile>
-</profiles>-->
-
-
-
 </project>

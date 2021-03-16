@@ -10,6 +10,7 @@ import org.fimba.warehousemanagmentsystem.dao.WarehouseCRUDRepository;
 import org.fimba.warehousemanagmentsystem.exception.ResourceNotFoundException;
 import org.fimba.warehousemanagmentsystem.model.dto.ProductWarehouseDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.StockTransferDTO;
+import org.fimba.warehousemanagmentsystem.model.dto.StockUpdateDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
 import org.fimba.warehousemanagmentsystem.model.entities.ProductEntity;
 import org.fimba.warehousemanagmentsystem.model.entities.ProductWarehouseEntity;
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,9 +36,13 @@ public class ProductWarehouseController {
 
     @PostMapping
     public ResponseEntity<?> add(@RequestBody ProductWarehouseDTO dto) {
-        return productWarehouseService.add(dto);
+        return  productWarehouseService.add(dto);
     }
 
+    @PostMapping("update")
+    public ResponseEntity<?> update(@RequestBody StockUpdateDTO dto) {
+        return  productWarehouseService.update(dto);
+    }
 
 
     @GetMapping("/warehouses")
@@ -47,6 +53,12 @@ public class ProductWarehouseController {
     @GetMapping
     public ResponseEntity<?> summaries() {
       return productWarehouseService.summaries();
+
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<Collection<ProductWarehouseEntity>> list() {
+        return productWarehouseService.list();
 
     }
 
