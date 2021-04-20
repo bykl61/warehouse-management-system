@@ -3,7 +3,6 @@ import './App.css';
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom';
 import WarehouseListComponents from './components/WarehouseListComponents';
 import HeaderComponent from './components/HeaderComponent';
-import FooterComponent from './components/FooterComponent';
 import CreateWarehouseComponent from './components/CreateWarehouseComponent';
 import UpdateWarehouseComponent from './components/UpdateWarehouseComponent';
 import ProductsListComponent from './components/Products/ProductsListComponent';
