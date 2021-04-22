@@ -10,7 +10,6 @@ import org.fimba.warehousemanagmentsystem.model.dto.StockTransferDTO;
 import org.fimba.warehousemanagmentsystem.model.dto.StockUpdateDTO;
 import org.fimba.warehousemanagmentsystem.model.entities.ProductEntity;
 import org.fimba.warehousemanagmentsystem.model.entities.ProductWarehouseEntity;
-import org.fimba.warehousemanagmentsystem.model.entities.UserEntity;
 import org.fimba.warehousemanagmentsystem.model.entities.WarehouseEntity;
 import org.fimba.warehousemanagmentsystem.service.ProductWarehouseService;
 import org.fimba.warehousemanagmentsystem.service.TransferOperationService;
@@ -21,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Objects;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,16 +30,15 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
     private final WarehouseCRUDRepository warehouseCRUDRepository;
     private final ProductCRUDRepository productCRUDRepository;
     private final ProductWarehouseRepository productWarehouseRepository;
-    private final UserCRUDRepository userCRUDRepository;
     private final TransferOperationService transferOperationService;
     private final TransferOperationRepository transferOperationRepository;
 
     @Override
     public ResponseEntity<?> add(ProductWarehouseDTO dto) {
 
-        boolean controll = transferOperationService.isExist(dto.getProductId(), dto.getWarehouseId());
+        boolean control = transferOperationService.isExist(dto.getProductId(), dto.getWarehouseId());
 
-        if(controll){
+        if (control) {
             throw new DuplicateException("Product and Warehouse already exist");
         }
 
@@ -51,18 +49,14 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
         ProductEntity productEntity = productCRUDRepository.findById(dto.getProductId())
                 .orElseThrow(() -> new ResourceNotFoundException("Not Found Product"));
 
-        UserEntity userEntity = userCRUDRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("Not Found User"));
 
-        // We associate the objects with "ProductWarehouse".
         ProductWarehouseEntity productWarehouseEntity = new ProductWarehouseEntity();
 
         productWarehouseEntity.setStok(dto.getStok());
         productWarehouseEntity.setDate(new Date());
-
         productWarehouseEntity.setWarehouseEntity(warehouseEntity);
         productWarehouseEntity.setProductEntity(productEntity);
-        productWarehouseEntity.setUserEntity(userEntity);
+
 
         productWarehouseRepository.save(productWarehouseEntity);
 
@@ -76,34 +70,27 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
         transferDTO.setToWarehouseId(dto.getToWarehouseId());
         transferDTO.setFromWarehouseId(dto.getFromWarehouseId());
         transferDTO.setProductId(dto.getProductId());
-        transferDTO.setUserId(dto.getUserId());
 
         boolean control = transferOperationService.isExist(transferDTO.getProductId(), transferDTO.getToWarehouseId());
 
 
         if (control) {
-            log.info("Duplicate Operation");
+
             ProductWarehouseEntity fromWarehouseEntity = transferOperationRepository.isExist(transferDTO.getProductId(), transferDTO.getFromWarehouseId());
             Long stok1 = fromWarehouseEntity.getStok();
-            log.info("Stok Getirildi");
             productWarehouseRepository.delete(fromWarehouseEntity);
-            log.info("ProductWarehouse Silindi");
 
             ProductWarehouseEntity toWarehouseEntity = transferOperationRepository.isExist(transferDTO.getProductId(), transferDTO.getToWarehouseId());
             Long stok2 = toWarehouseEntity.getStok();
 
-            UserEntity userEntity = userCRUDRepository.getOne(dto.getUserId());
 
-            toWarehouseEntity.setUserEntity(userEntity);
             toWarehouseEntity.setStok(stok1 + stok2);
             productWarehouseRepository.save(toWarehouseEntity);
 
 
-            log.info("Yeni Kayıt Eklendi");
             return ResponseEntity.ok(HttpStatus.OK);
         }
 
-        log.info("Transfer Operation");
         productWarehouseRepository.transfer(transferDTO.getToWarehouseId(), transferDTO.getFromWarehouseId(), transferDTO.getProductId());
 
         return ResponseEntity.ok(HttpStatus.OK);
@@ -114,14 +101,13 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
 
         boolean control = transferOperationService.isExist(dto.getProductId(), dto.getWarehouseId());
 
-        if(!control){
+        if (!control) {
             throw new ResourceNotFoundException("Not found warehouse and product");
         }
 
         ProductWarehouseEntity productWarehouseEntity =
                 productWarehouseRepository.update(dto.getWarehouseId(), dto.getProductId());
         productWarehouseEntity.setStok(dto.getStock());
-
 
 
         productWarehouseRepository.save(productWarehouseEntity);

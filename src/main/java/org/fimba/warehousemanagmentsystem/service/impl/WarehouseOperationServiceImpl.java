@@ -1,7 +1,6 @@
 package org.fimba.warehousemanagmentsystem.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.fimba.warehousemanagmentsystem.dao.WarehouseCRUDRepository;
 import org.fimba.warehousemanagmentsystem.dao.WarehouseOperationRepository;
 import org.fimba.warehousemanagmentsystem.service.WarehouseOperationService;
 import org.springframework.stereotype.Service;

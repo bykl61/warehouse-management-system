@@ -10,8 +10,6 @@ public class ProductWarehouseDTO  {
 
   private Long warehouseId;
 
-  private Long userId;
-
   private Long stok;
 
   private Date date;

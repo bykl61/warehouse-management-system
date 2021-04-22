@@ -11,5 +11,4 @@ public class StockTransferDTO {
     private Long productId;
     private Long fromWarehouseId;
     private Long toWarehouseId;
-    private Long userId;
 }

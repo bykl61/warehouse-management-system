@@ -3,13 +3,11 @@ package org.fimba.warehousemanagmentsystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.fimba.warehousemanagmentsystem.base.WarehouseAPIResponseHolder;
 import org.fimba.warehousemanagmentsystem.model.dto.ProductDTO;
-import org.fimba.warehousemanagmentsystem.model.dto.WarehouseDTO;
 import org.fimba.warehousemanagmentsystem.service.ProductCRUDService;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.Collection;
-@CrossOrigin(origins = "http://localhost:3000")
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/products")

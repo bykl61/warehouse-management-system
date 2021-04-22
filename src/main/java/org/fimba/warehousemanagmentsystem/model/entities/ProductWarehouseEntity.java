@@ -3,8 +3,6 @@ package org.fimba.warehousemanagmentsystem.model.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.fimba.warehousemanagmentsystem.model.dto.ProductWarehouseDTO;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -28,10 +26,6 @@ public class ProductWarehouseEntity {
     @JoinColumn(name = "warehouses")
     private WarehouseEntity warehouseEntity;
 
-    @ManyToOne
-    @MapsId("userId")
-    @JoinColumn(name = "users")
-    private UserEntity userEntity;
 
 
     @Column(name = "stoks")

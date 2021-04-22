@@ -1,7 +1,7 @@
 package org.fimba.warehousemanagmentsystem.base;
 
 import org.fimba.warehousemanagmentsystem.model.dto.BaseDTO;
-import org.springframework.http.ResponseEntity;
+
 
 import java.util.Collection;
 
