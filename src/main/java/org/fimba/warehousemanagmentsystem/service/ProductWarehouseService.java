@@ -18,5 +18,4 @@ public interface ProductWarehouseService{
 
     ResponseEntity<Collection<?>> summaries();
 
-    ResponseEntity<Collection<ProductWarehouseEntity>> list();
 }

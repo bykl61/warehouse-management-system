@@ -13,8 +13,6 @@ import java.util.Collection;
 @Repository
 public interface ProductWarehouseRepository extends JpaRepository<ProductWarehouseEntity,Long> {
 
-    @Query("select p from ProductWarehouseEntity p")
-    Collection<ProductWarehouseEntity> list();
 
     @Query("select w.warehouseEntity.name,w.productEntity.name,w.productEntity.price,w.productEntity.vatAmount," +
             "w.productEntity.vatIncludedPrice from  ProductWarehouseEntity w")

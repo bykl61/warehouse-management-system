@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/warehouses/transfer")
+@RequestMapping("/warehouseapi/warehouses/transfer")
 
 public class WarehouseTransferController {
     private final WarehouseTransferOperationService transferOperationService;

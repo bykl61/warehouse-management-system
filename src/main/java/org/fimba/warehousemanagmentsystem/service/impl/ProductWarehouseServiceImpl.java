@@ -122,9 +122,4 @@ public class ProductWarehouseServiceImpl implements ProductWarehouseService {
         return ResponseEntity.ok().body(productWarehouseEntity);
     }
 
-    @Override
-    public ResponseEntity<Collection<ProductWarehouseEntity>> list() {
-        Collection<ProductWarehouseEntity> productWarehouseEntities = productWarehouseRepository.list();
-        return ResponseEntity.ok().body(productWarehouseEntities);
-    }
 }

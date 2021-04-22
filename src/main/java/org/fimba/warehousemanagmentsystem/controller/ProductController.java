@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/warehouseapi/products")
 public class ProductController {
     private final ProductCRUDService productCRUDService;
 

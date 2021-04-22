@@ -12,7 +12,7 @@ import java.util.Collection;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/warehouses")
+@RequestMapping("/warehouseapi/warehouses")
 public class WarehouseController {
 
     private final WarehouseCRUDService warehouseCRUDService;

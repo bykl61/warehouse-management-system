@@ -15,7 +15,7 @@ import java.util.Collection;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/products/transfer")
+@RequestMapping("/warehouseapi/productwarehouse/transfer")
 public class ProductWarehouseController {
 
     private final ProductWarehouseService productWarehouseService;
@@ -26,23 +26,17 @@ public class ProductWarehouseController {
 
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<Collection<ProductWarehouseEntity>> list() {
-        return productWarehouseService.list();
-
-    }
-
     @PostMapping
     public ResponseEntity<?> add(@RequestBody ProductWarehouseDTO dto) {
         return  productWarehouseService.add(dto);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody StockUpdateDTO dto) {
         return  productWarehouseService.update(dto);
     }
 
-    @PutMapping("/warehouses")
+    @PutMapping("/product")
     public ResponseEntity<?> transfer(@RequestBody StockTransferDTO dto) {
         return productWarehouseService.transfer(dto);
     }
