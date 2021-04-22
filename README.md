@@ -5,9 +5,7 @@
 
 # Warehouse Management System Rest API
 
-**Depo Yönetim Sistemi**
-
-# PORT:8080
+** PORT:8080 **
 
 # Gereksinimler
 
