@@ -5,7 +5,7 @@
 
 # Warehouse Management System Rest API
 
-** PORT:8080 
+*PORT:8080 
 
 # Gereksinimler
 
